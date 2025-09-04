@@ -41,7 +41,7 @@ export default function Page() {
     return firstAssignment || "Bash Basics";
   });
   const [username, setUsername] = useState("");
-  const [permission, setPermission] = useState<"pull"|"triage"|"push"|"maintain"|"admin">("push");
+  // const [permission, setPermission] = useState<"pull"|"triage"|"push"|"maintain"|"admin">("push");
   const [dryRun, setDryRun] = useState(false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
@@ -64,7 +64,7 @@ export default function Page() {
       setResult({ ok: false, error: "Username is required" });
       return;
     }
-    
+
     setLoading(true);
     setResult(null);
 
@@ -72,7 +72,7 @@ export default function Page() {
       const res = await fetch("/api/reinvite", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ owner, repo: repoName, username, permission, dryRun }),
+        body: JSON.stringify({ owner, repo: repoName, username, permission: `push`, dryRun }),
       });
       const json = await res.json();
       setResult(json);
@@ -85,14 +85,14 @@ export default function Page() {
   };
 
   return (
-    <div style={{ 
-      minHeight: "100vh", 
+    <div style={{
+      minHeight: "100vh",
       background: "linear-gradient(135deg, #8B0000 0%, #000000 100%)",
       padding: "0.75rem"
     }}>
-      <main style={{ 
-        maxWidth: 680, 
-        margin: "0 auto", 
+      <main style={{
+        maxWidth: 680,
+        margin: "0 auto",
         background: "white",
         borderRadius: "16px",
         boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
@@ -100,10 +100,10 @@ export default function Page() {
         fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
       }}>
         <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-          <h1 style={{ 
-            fontSize: "2.5rem", 
-            fontWeight: "700", 
-            color: "#1a1a1a", 
+          <h1 style={{
+            fontSize: "2.5rem",
+            fontWeight: "700",
+            color: "#1a1a1a",
             margin: "0 0 0.5rem 0",
             background: "linear-gradient(135deg, #8B0000 0%, #000000 100%)",
             WebkitBackgroundClip: "text",
@@ -112,9 +112,9 @@ export default function Page() {
           }}>
             GitHub Re-invite Tool
           </h1>
-          <p style={{ 
-            fontSize: "1.1rem", 
-            color: "#6b7280", 
+          <p style={{
+            fontSize: "1.1rem",
+            color: "#6b7280",
             margin: "0",
             lineHeight: "1.6"
           }}>
@@ -124,17 +124,17 @@ export default function Page() {
 
         <form onSubmit={onSubmit} style={{ display: "grid", gap: "0.75rem" }}>
           <div style={{ display: "grid", gap: "0.5rem" }}>
-            <label style={{ 
-              fontSize: "0.875rem", 
-              fontWeight: "600", 
+            <label style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
               color: "#374151",
               textTransform: "uppercase",
               letterSpacing: "0.05em"
             }}>
               Organization
             </label>
-            <select 
-              value={organization} 
+            <select
+              value={organization}
               onChange={e => handleOrganizationChange(e.target.value as OrganizationKey)}
               style={{
                 padding: "0.875rem 1rem",
@@ -156,17 +156,17 @@ export default function Page() {
           </div>
 
           <div style={{ display: "grid", gap: "0.5rem" }}>
-            <label style={{ 
-              fontSize: "0.875rem", 
-              fontWeight: "600", 
+            <label style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
               color: "#374151",
               textTransform: "uppercase",
               letterSpacing: "0.05em"
             }}>
               Assignment
             </label>
-            <select 
-              value={assignment} 
+            <select
+              value={assignment}
               onChange={e => setAssignment(e.target.value)}
               style={{
                 padding: "0.875rem 1rem",
@@ -189,20 +189,20 @@ export default function Page() {
 
 
           <div style={{ display: "grid", gap: "0.5rem" }}>
-            <label style={{ 
-              fontSize: "0.875rem", 
-              fontWeight: "600", 
+            <label style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
               color: "#374151",
               textTransform: "uppercase",
               letterSpacing: "0.05em"
             }}>
               Username
             </label>
-            <input 
-              value={username} 
-              onChange={e => setUsername(e.target.value)} 
-              placeholder="e.g. octocat" 
-              required 
+            <input
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              placeholder="e.g. octocat"
+              required
               style={{
                 padding: "0.875rem 1rem",
                 border: "2px solid #e5e7eb",
@@ -216,17 +216,17 @@ export default function Page() {
             />
           </div>
 
-          <div style={{ 
-            display: "grid", 
+          <div style={{
+            display: "grid",
             gap: "0.5rem",
             padding: "1rem",
             background: "#f8fafc",
             borderRadius: "8px",
             border: "1px solid #e2e8f0"
           }}>
-            <label style={{ 
-              fontSize: "0.875rem", 
-              fontWeight: "600", 
+            <label style={{
+              fontSize: "0.875rem",
+              fontWeight: "600",
               color: "#374151",
               textTransform: "uppercase",
               letterSpacing: "0.05em"
@@ -246,52 +246,18 @@ export default function Page() {
             </div>
           </div>
 
-          <div style={{ display: "grid", gap: "0.5rem" }}>
-            <label style={{ 
-              fontSize: "0.875rem", 
-              fontWeight: "600", 
-              color: "#374151",
-              textTransform: "uppercase",
-              letterSpacing: "0.05em"
-            }}>
-              Permission Level
-            </label>
-            <select 
-              value={permission} 
-              onChange={e => setPermission(e.target.value as "pull"|"triage"|"push"|"maintain"|"admin")}
-              style={{
-                padding: "0.875rem 1rem",
-                border: "2px solid #e5e7eb",
-                borderRadius: "8px",
-                fontSize: "1rem",
-                transition: "all 0.2s ease",
-                outline: "none",
-                background: "white",
-                cursor: "pointer"
-              }}
-              onFocus={(e) => e.target.style.borderColor = "#8B0000"}
-              onBlur={(e) => e.target.style.borderColor = "#e5e7eb"}
-            >
-              <option value="pull">📖 Pull (Read)</option>
-              <option value="triage">🔍 Triage</option>
-              <option value="push">✏️ Push (Write)</option>
-              <option value="maintain">🔧 Maintain</option>
-              <option value="admin">👑 Admin</option>
-            </select>
-          </div>
-
-          <div style={{ 
-            display: "flex", 
-            gap: "0.75rem", 
+          <div style={{
+            display: "flex",
+            gap: "0.75rem",
             alignItems: "center",
             padding: "1rem",
             background: "#f8fafc",
             borderRadius: "8px",
             border: "1px solid #e2e8f0"
           }}>
-            <input 
-              type="checkbox" 
-              checked={dryRun} 
+            <input
+              type="checkbox"
+              checked={dryRun}
               onChange={e => setDryRun(e.target.checked)}
               style={{
                 width: "18px",
@@ -299,8 +265,8 @@ export default function Page() {
                 accentColor: "#8B0000"
               }}
             />
-            <label style={{ 
-              fontSize: "0.95rem", 
+            <label style={{
+              fontSize: "0.95rem",
               color: "#4b5563",
               cursor: "pointer",
               fontWeight: "500"
@@ -309,8 +275,8 @@ export default function Page() {
             </label>
           </div>
 
-          <button 
-            disabled={loading} 
+          <button
+            disabled={loading}
             type="submit"
             style={{
               padding: "1rem 2rem",
@@ -345,10 +311,10 @@ export default function Page() {
 
         {result && (
           <section style={{ marginTop: "1rem" }}>
-            <h2 style={{ 
-              fontSize: "1.5rem", 
-              fontWeight: "600", 
-              color: "#1a1a1a", 
+            <h2 style={{
+              fontSize: "1.5rem",
+              fontWeight: "600",
+              color: "#1a1a1a",
               marginBottom: "1rem",
               display: "flex",
               alignItems: "center",
@@ -357,15 +323,15 @@ export default function Page() {
               {result.ok ? "✅ Result" : "❌ Error"}
             </h2>
             {!result.ok && (
-              <div style={{ 
-                background: "#fef2f2", 
+              <div style={{
+                background: "#fef2f2",
                 border: "1px solid #fecaca",
                 borderRadius: "8px",
                 padding: "1rem",
                 color: "#dc2626"
               }}>
-                <pre style={{ 
-                  whiteSpace: "pre-wrap", 
+                <pre style={{
+                  whiteSpace: "pre-wrap",
                   margin: "0",
                   fontFamily: "inherit"
                 }}>
@@ -374,8 +340,8 @@ export default function Page() {
               </div>
             )}
             {result.ok && (
-              <div style={{ 
-                background: "#f0f9ff", 
+              <div style={{
+                background: "#f0f9ff",
                 border: "1px solid #bae6fd",
                 borderRadius: "8px",
                 padding: "1.5rem",
@@ -389,15 +355,15 @@ export default function Page() {
                     padding: "1rem",
                     marginBottom: "1rem"
                   }}>
-                    <h3 style={{ 
-                      margin: "0 0 0.5rem 0", 
-                      fontSize: "1rem", 
-                      fontWeight: "600", 
-                      color: "#166534" 
+                    <h3 style={{
+                      margin: "0 0 0.5rem 0",
+                      fontSize: "1rem",
+                      fontWeight: "600",
+                      color: "#166534"
                     }}>
                       🎉 Repository Link
                     </h3>
-                    <a 
+                    <a
                       href={`https://github.com/${owner}/${repoName}`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -420,7 +386,7 @@ export default function Page() {
                     </a>
                   </div>
                 )}
-                <pre style={{ 
+                <pre style={{
                   background: "white",
                   padding: "1rem",
                   borderRadius: "6px",
@@ -438,7 +404,7 @@ export default function Page() {
           </section>
         )}
       </main>
-      
+
       <footer style={{
         textAlign: "center",
         marginTop: "1rem",
@@ -461,10 +427,10 @@ export default function Page() {
           </span>
         </p>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
-          <a 
-            href="https://yahyagilany.io" 
-            style={{ 
-              color: "rgba(255, 255, 255, 0.9)", 
+          <a
+            href="https://yahyagilany.io"
+            style={{
+              color: "rgba(255, 255, 255, 0.9)",
               textDecoration: "none",
               fontSize: "0.8rem",
               display: "flex",
@@ -474,10 +440,10 @@ export default function Page() {
           >
             🌐 Website
           </a>
-          <a 
-            href="https://www.buymeacoffee.com/ygilany" 
-            style={{ 
-              color: "rgba(255, 255, 255, 0.9)", 
+          <a
+            href="https://www.buymeacoffee.com/ygilany"
+            style={{
+              color: "rgba(255, 255, 255, 0.9)",
               textDecoration: "none",
               fontSize: "0.8rem",
               display: "flex",
@@ -487,10 +453,10 @@ export default function Page() {
           >
             ☕ Buy Me a Coffee
           </a>
-          <a 
-            href="https://github.com/ygilany/github-reinvite" 
-            style={{ 
-              color: "rgba(255, 255, 255, 0.9)", 
+          <a
+            href="https://github.com/ygilany/github-reinvite"
+            style={{
+              color: "rgba(255, 255, 255, 0.9)",
               textDecoration: "none",
               fontSize: "0.8rem",
               display: "flex",
